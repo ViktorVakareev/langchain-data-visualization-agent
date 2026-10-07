@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "langchain-data-visualization-agent"
+version = "1.0.0"
+description = "Chat with your CSV files and get charts: a LangChain 1.x create_agent with typed, read-only pandas/matplotlib tools (no LLM-written code is executed). Gemini (free), OpenAI or offline mode; the lab's create_pandas_dataframe_agent kept for comparison."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "VictorV" }]
+keywords = ["langchain", "langgraph", "ai-agents", "tool-calling", "data-visualization", "pandas", "matplotlib", "gemini", "openai", "llm", "coursera", "portfolio-project"]
+dependencies = [
+    "langchain>=1.0",
+    "langchain-core>=1.0",
+    "pandas>=2.0",
+    "matplotlib>=3.9",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+gemini = ["langchain-google-genai>=3.0"]
+openai = ["langchain-openai>=1.0"]
+lab = ["langchain-experimental>=0.4", "langchain-classic>=1.0", "tabulate>=0.9"]
+dev = ["pytest>=8", "pytest-cov>=5", "nbclient>=0.10", "nbformat>=5.10", "ipykernel>=6"]
+all = ["langchain-data-visualization-agent[gemini,openai,lab,dev]"]
+
+[project.scripts]
+viz-agent = "viz_agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["live: calls a real LLM API (needs GOOGLE_API_KEY or OPENAI_API_KEY); skipped otherwise"]
+filterwarnings = ["ignore:.*is being sunset.*:DeprecationWarning"]
